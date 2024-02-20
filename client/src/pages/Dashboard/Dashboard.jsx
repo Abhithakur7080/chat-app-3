@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 
@@ -16,6 +16,8 @@ const Dashboard = () => {
   const [message, setMessage] = useState("");
   const [users, setUsers] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [peoples, setPeoples] = useState([])
+  const messageRef = useRef(null);
 
   useEffect(() => {
     const socketConnection = io("http://localhost:4000");
@@ -25,16 +27,24 @@ const Dashboard = () => {
   useEffect(() => {
     socket?.emit("addUser", user?.id);
     socket?.on("getUsers", (users) => {
-      console.log("active users :> ", users);
+      console.log(users);
+      setPeoples(users)
     });
-    socket?.on('getMessage', data => {
-      console.log("data", data);
-      setMessages(prev => ({
+    socket?.on("getMessage", (data) => {
+      setMessages((prev) => ({
         ...prev,
-        messages: [...prev.messages, {user, message: data.messages}]
-      }))
-  })
-  }, [socket, user]);
+        messages: [...prev.messages, { user, message: data.message }],
+      }));
+    });
+  }, [socket]);
+  // useEffect(() => {
+  //   const scrollToBottom = () => {
+  //     if (messageRef.current) {
+  //       messageRef.current.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   };
+  //   scrollToBottom();
+  // }, [messages?.messages]);
   const fetchConversation = async () => {
     try {
       const response = await axios.get(
@@ -61,7 +71,6 @@ const Dashboard = () => {
   };
   const sendMessage = async () => {
     try {
-      setMessage("")
       socket?.emit("sendMessage", {
         conservationId: messages?.conservationId,
         senderId: user?.id,
@@ -74,7 +83,7 @@ const Dashboard = () => {
         message,
         receiverId: messages?.receiver?.receiverId,
       });
-      
+      setMessage("");
     } catch (error) {
       console.log(error);
     }
@@ -107,8 +116,9 @@ const Dashboard = () => {
         sendMessage={sendMessage}
         message={message}
         setMessage={setMessage}
+        messageRef={messageRef}
       />
-      <Peoples users={users} fetchMessages={fetchMessages} />
+      <Peoples users={users} peoples={peoples} fetchMessages={fetchMessages} />
     </div>
   );
 };

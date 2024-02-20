@@ -5,9 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "server": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+    "start": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "client": "npm run dev --prefix ./client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm start\" \"npm run client\""
   },
   "author": "Abhijeet",
   "license": "ISC",

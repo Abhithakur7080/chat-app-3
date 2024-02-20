@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
+app.use(express.static('dist'))
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

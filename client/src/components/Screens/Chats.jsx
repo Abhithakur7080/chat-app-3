@@ -5,7 +5,7 @@ import Input from "../Inputs/Input";
 import { BsSend } from "react-icons/bs";
 import { GoPlusCircle } from "react-icons/go";
 
-const Chats = ({ messages, user, message, sendMessage, setMessage }) => {
+const Chats = ({ messages, user, message, sendMessage, setMessage, messageRef }) => {
   return (
     <div className="w-1/2 border bg-white h-screen md:flex flex-col items-center">
       {messages?.receiver?.fullName && (
@@ -28,6 +28,7 @@ const Chats = ({ messages, user, message, sendMessage, setMessage }) => {
         >
           {messages?.messages?.length > 0 ? (
             messages?.messages?.map(({ message, user: { id } = {} }) => (
+              <>
               <div
                 className={`min-w-2 max-w-[40%] mt-2  rounded-b-lg shadow-md  relative p-4 ${id === user?.id ? "bg-secondary rounded-tr-lg scale-up-tl" : "ml-auto bg-blue-600 rounded-tl-lg text-white scale-up-tr"}`}
               >
@@ -36,6 +37,8 @@ const Chats = ({ messages, user, message, sendMessage, setMessage }) => {
                 ></div>
                 {message}
               </div>
+              <div ref={messageRef}></div>
+              </>
             ))
           ) : (
             <div className="flex items-center justify-center">

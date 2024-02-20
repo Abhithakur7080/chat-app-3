@@ -1,11 +1,11 @@
 import React from "react";
 import Avatar from "../../assets/user.png";
 
-const Peoples = ({ users, fetchMessages }) => {
+const Peoples = ({ users, fetchMessages, peoples }) => {
   return (
     <div className="w-1/4 border-black h-screen bg-light">
       <div className="p-6 text-center border-b-2">
-        <h3 className="text-primary text-lg">Peoples</h3>
+        <h3 className="text-primary text-lg">Online {peoples?.length}</h3>
       </div>
       <div className="h-[88%] w-full overflow-y-scroll scrollClass">
         {users.length > 0 ? (
